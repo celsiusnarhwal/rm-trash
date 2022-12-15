@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "rm-trash"
+version = "0.1.0"
+description = ""
+authors = ["celsius narhwal <hello@celsiusnarhwal.dev>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+typer = {extras = ["all"], version = "^0.7.0"}
+inflect = "^6.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
