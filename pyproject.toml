@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rm-trash"
-version = "0.0.3"
+version = "0.0.4"
 description = "🗑 Safe(r) deletion of files from the macOS command line"
 authors = ["celsius narhwal <hello@celsiusnarhwal.dev>"]
 readme = "README.md"
