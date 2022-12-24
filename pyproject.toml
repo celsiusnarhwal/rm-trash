@@ -17,9 +17,6 @@ trash = "rm_trash.trash:app"
 [tool.poetry.group.dev.dependencies]
 laureate = "^2.0.0"
 
-[tool.poetry.group.ci.dependencies]
-laureate = "^2.0.0"
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
