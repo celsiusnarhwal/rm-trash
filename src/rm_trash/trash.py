@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 import inflect as ifl
@@ -213,6 +214,10 @@ def main(show_license: bool = typer.Option(False, "--license", "-l", callback=li
 
     For help with a specific command, run trash [command] --help.
     """
+    if sys.platform == "darwin":
+        print("[bold red]Error: [/]trash only works on macOS.")
+        raise typer.Exit(1)
+
     if os.geteuid() == 0 and "disabled" in subprocess.run(["csrutil", "status"], capture_output=True).stdout.decode():
         print("[bold red]Error: [/]trash refuses to run as root when System Integrity Protection is disabled.\n"
               "If you must do whatever you're trying to do, do it with [bold green]rm[/].\n"
