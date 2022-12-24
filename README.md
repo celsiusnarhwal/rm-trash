@@ -1,5 +1,7 @@
 # rm-trash
 
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/celsiusnarhwal/rm-trash?logo=github&color=orange&logoColor=white&style=for-the-badge)](https://github.com/celsiusnarhwal/rm-trash/releases)
+
 rm-trash is a macOS command-line utility that moves files and directories to the Trash.
 Unlike [similar](https://github.com/ali-rantakari/trash) [tools](https://github.com/sindresorhus/macos-trash),
 rm-trash intends to be a complete alternative to `rm` and `rmdir`, to the extent that you could use aliases
@@ -43,7 +45,8 @@ alias rmdir="trash dir"
 
 ## Limitations
 
-rm-trash refuses to as root when [System Integrity Protection](https://support.apple.com/en-us/HT204899) (SIP) is disabled.
+rm-trash refuses to as root when [System Integrity Protection](https://support.apple.com/en-us/HT204899) (SIP) is
+disabled.
 You can still run rm-trash as a non-root user when SIP is disabled, or as any user when SIP is enabled. This limitation
 is intended to prevent you from accidentally trashing files and directories that are typically protected by SIP.
 

@@ -201,7 +201,7 @@ def empty(yes: bool = typer.Option(None, "--yes", "-y", help="Bypass the confirm
 
 def license_callback(value: bool):
     if value:
-        print(Path("LICENSE.md").read_text())
+        print((Path(__file__).parent / "LICENSE.md").read_text())
         raise typer.Exit()
 
 
