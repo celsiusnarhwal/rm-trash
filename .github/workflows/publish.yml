@@ -1,0 +1,58 @@
+on:
+  release:
+    types:
+      - published
+
+  workflow_dispatch:
+
+
+jobs:
+  pypi:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Publish With Poetry
+        uses: celsiusnarhwal/poetry-publish@v2
+        with:
+          python-version: 3.11.0
+          poetry-version: 1.3.1
+          token: ${{ secrets.PYPI_TOKEN }}
+
+  brew:
+    name: Publish to HTT
+    runs-on: ubuntu-latest
+    needs: pypi
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          path: repo
+
+      - name: Checkout HTT
+        uses: actions/checkout@v3
+        with:
+          repository: celsiusnarhwal/homebrew-htt
+          path: htt
+          token: ${{ secrets.HTT_TOKEN }}
+
+      - name: Build Formula
+        run: |
+          curl -sSL https://install.python-poetry.org | python -
+          poetry install --only ci
+          laureate
+
+      - name: Set Git User
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Push to HTT
+        run: |
+          cd htt
+          mv ../rm-trash.rb Formula/rm-trash.rb
+          git add Formula/rm-trash.rb
+          git commit -m "rm-trash: Update formula"
+          git push

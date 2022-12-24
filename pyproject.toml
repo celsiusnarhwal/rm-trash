@@ -1,15 +1,24 @@
 [tool.poetry]
 name = "rm-trash"
-version = "0.1.0"
-description = ""
+version = "0.0.0"
+description = "Trash files and directories from your command line. A safer alternative to rm and rmdir."
 authors = ["celsius narhwal <hello@celsiusnarhwal.dev>"]
 readme = "README.md"
+homepage = "https://github.com/celsiusnarhwal/rm-trash"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-typer = {extras = ["all"], version = "^0.7.0"}
+typer = { extras = ["all"], version = "^0.7.0" }
 inflect = "^6.0.2"
 
+[tool.poetry.scripts]
+trash = "rm_trash.trash:app"
+
+[tool.poetry.group.dev.dependencies]
+laureate = "^2.0.0"
+
+[tool.poetry.group.ci.dependencies]
+laureate = "^2.0.0"
 
 [build-system]
 requires = ["poetry-core"]
