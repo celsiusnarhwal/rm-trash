@@ -7,7 +7,7 @@ readme = "README.md"
 homepage = "https://github.com/celsiusnarhwal/rm-trash"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.8"
 typer = { extras = ["all"], version = "^0.7.0" }
 inflect = "^6.0.2"
 
