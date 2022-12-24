@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rm-trash"
-version = "0.0.0"
+version = "0.0.1
 description = "Trash files and directories from your command line. A safer alternative to rm and rmdir."
 authors = ["celsius narhwal <hello@celsiusnarhwal.dev>"]
 readme = "README.md"
