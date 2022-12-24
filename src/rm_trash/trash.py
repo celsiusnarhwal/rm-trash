@@ -40,9 +40,10 @@ def trash(files: list[Path] = typer.Argument(...),
           one_file_system: bool = typer.Option(False, "--one-file-system", "-x", help="When recursively trashing a "
                                                                                       "directory, skip subdirectories "
                                                                                       "on different volumes."),
-          mute: bool = typer.Option(False, "--mute", "-m", help="Mute the 'Trash' sound effect by muting your volume "
+          mute: bool = typer.Option(False, "--mute", "-m", help="Mute the \"Trash\" sound effect by muting your volume "
                                                                 "while trash runs and then unmuting it afterwards "
-                                                                "(if it was unmuted before trash was run). Has no "
+                                                                "(if it was unmuted before trash was run). trash "
+                                                                "will play the sound effect once on completion. Has no "
                                                                 "effect if your volume is muted to start with."),
           full_mute: bool = typer.Option(False, "--mute=full", "-M", help="The same as -m, but trash will not play "
                                                                           "the sound effect on completion. Overrides "
@@ -61,27 +62,22 @@ def trash(files: list[Path] = typer.Argument(...),
 
     was_initially_muted = commands.get_is_muted()
 
-    if interactive:
-        interactive = not force
-
-    if interactive_once:
-        interactive_once = not interactive and not force
-
-    if verbose:
-        verbose = not quiet
-
-    if mute:
-        mute = not full_mute
+    dirs = dirs or recursive
+    interactive = interactive and not force
+    interactive_once = interactive_once and not any([force, interactive])
+    verbose = verbose and not quiet
+    mute = mute and not full_mute
 
     with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), transient=True) as progress:
         if not quiet:
             progress.add_task("Getting ready...", total=None)
 
         are_directories = any(Path(file).is_dir() for file in files)
-        if are_directories and not (dirs or recursive):
+        if are_directories and not dirs:
             echo(
                 "[bold red]Error: [/bold red]Refusing to remove directories without [bold green]-d[/] or "
-                "[bold green]-R[/].")
+                "[bold green]-R[/]."
+            )
             raise typer.Exit(1)
 
         if are_directories and any(
@@ -151,10 +147,11 @@ def trash_dir(directories: list[Path] = typer.Argument(...),
                                            help="Print the name of each directory as it's trashed."),
               quiet: bool = typer.Option(False, "--quiet", "-q", help="Suppress all output aside from errors and "
                                                                       "prompts. Overrides -v."),
-              mute: bool = typer.Option(False, "--mute", "-m", help="Mute the 'Trash' sound effect by muting your "
+              mute: bool = typer.Option(False, "--mute", "-m", help="Mute the \"Trash\" sound effect by muting your "
                                                                     "volume while trash runs and then unmuting it "
                                                                     "afterwards (if it was unmuted before trash "
-                                                                    "was run). Has no effect if your volume is "
+                                                                    "was run). trash will play the sound effect once "
+                                                                    "on completion. Has no effect if your volume is "
                                                                     "muted to start with."),
               full_mute: bool = typer.Option(False, "--mute=full", "-M", help="The same as -m, but trash will not "
                                                                               "play the sound effect on completion. "
@@ -194,11 +191,11 @@ def trash_dir(directories: list[Path] = typer.Argument(...),
 
 
 @app.command()
-def empty():
+def empty(yes: bool = typer.Option(None, "--yes", "-y", help="Bypass the confirmation prompt.")):
     """
     Empty the trash. This can't be undone.
     """
-    if typer.confirm("Are you sure you want to empty the trash? This can't be undone."):
+    if yes or typer.confirm("Are you sure you want to empty the trash? This can't be undone."):
         commands.empty_trash()
 
 
@@ -208,7 +205,7 @@ def license_callback(value: bool):
         raise typer.Exit()
 
 
-@app.callback()
+@app.callback(epilog="Copyright (c) 2022-present celsius narhwal. Licensed under MIT.")
 def main(show_license: bool = typer.Option(False, "--license", "-l", callback=license_callback, is_eager=True,
                                            help="Show trash's license.")):
     """
