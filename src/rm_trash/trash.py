@@ -214,7 +214,7 @@ def main(show_license: bool = typer.Option(False, "--license", "-l", callback=li
 
     For help with a specific command, run trash [command] --help.
     """
-    if sys.platform == "darwin":
+    if sys.platform != "darwin":
         print("[bold red]Error: [/]trash only works on macOS.")
         raise typer.Exit(1)
 
